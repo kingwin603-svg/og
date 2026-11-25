@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Full Screen</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      background: #000;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay" style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25); color:white; font-size:28px; font-weight:bold; text-align:center; z-index:10; cursor:pointer; user-select:none;" onclick="startPlayback()">
+    اضغط على الشاشة للبدء
+  </div>
+
+  <video id="myVideo" autoplay playsinline loop preload="auto">
+    <source src="video.mp4" type="video/mp4" />
+    المتصفح لا يدعم الفيديو.
+  </video>
+
+  <script>
+    const video = document.getElementById('myVideo');
+    const overlay = document.getElementById('overlay');
+
+    function startPlayback() {
+      video.muted = false;
+      video.volume = 1;
+      video.play().catch(() => {
+        console.log('لا يزال محظوراً حتى تفاعل المستخدم مع الصفحة.');
+      });
+
+      overlay.style.display = 'none';
+    }
+
+    video.addEventListener('loadeddata', () => {
+      video.play().catch(() => {});
+    });
+
+    video.addEventListener('contextmenu', (e) => e.preventDefault());
+    video.addEventListener('keydown', (e) => e.preventDefault());
+  </script>
+</body>
+</html>
